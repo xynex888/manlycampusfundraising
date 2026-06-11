@@ -140,7 +140,7 @@
 const CONFIG = {
   // PASTE the Google Sheet "Publish to web -> CSV" link here to drive the LIVE page from the sheet.
   // Leave "" to use the in-repo sponsors.csv. See SHEET_SETUP.md for the 3 steps.
-  sheetCsvUrl: "",
+  sheetCsvUrl: "https://docs.google.com/spreadsheets/d/e/2PACX-1vTrhcOoplxz3fehco5FI05IZKPYVCzRQX4tfIGT2lUwwBhTu9c_6y53-hqLAhvWNem9UsDVlNbC3fPn/pub?gid=1877391369&single=true&output=csv",
   localCsv: "sponsors.csv",      // automatic fallback when the sheet is blank/unreachable
   auctionUrl: "https://app.galabid.com/manlytrivia/items",
   logoBase: "logos/"
@@ -175,8 +175,12 @@ function parseCSV(text){
       else if(c=='\n'){row.push(cur);rows.push(row);row=[];cur="";} else if(c=='\r'){} else cur+=c; } }
   if(cur.length||row.length){row.push(cur);rows.push(row);}
   if(!rows.length) return [];
-  const head=rows.shift().map(h=>h.trim().toLowerCase());
-  return rows.filter(r=>r.some(x=>x.trim()!="")).map(r=>{const o={};head.forEach((h,i)=>o[h]=(r[i]||"").trim());return o;});
+  // Find the header row — skip any leading title/blank rows (e.g. a "2026 FUNDRAISING"
+  // banner row the template puts above the columns). Header = first row naming Name + Tier.
+  let hi=rows.findIndex(r=>{const s=r.map(x=>x.trim().toLowerCase());return s.includes("name")&&s.includes("tier");});
+  if(hi<0) hi=0;
+  const head=rows[hi].map(h=>h.trim().toLowerCase());
+  return rows.slice(hi+1).filter(r=>r.some(x=>x.trim()!="")).map(r=>{const o={};head.forEach((h,i)=>o[h]=(r[i]||"").trim());return o;});
 }
 function isActive(v){ return /^(y|yes|true|1|active|on|x|live)$/i.test(String(v==null?"":v).trim()); }
 function normalise(rows){
