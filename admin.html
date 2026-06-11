@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Sponsor Admin — Manly Trivia 2026</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2032%2032'%3E%3Crect%20width='32'%20height='32'%20rx='7'%20fill='%230045AB'/%3E%3Ctext%20x='16'%20y='23'%20font-size='22'%20text-anchor='middle'%3E%E2%9D%84%EF%B8%8F%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{--green:#DCE9EA;--royal:#0045AB;--orange:#FF711A;--ink:#21303a;--line:#aad4ed;
+        --card:#fff;--warn:#b8860b;--bad:#c0392b;--ok:#1e7a3d;--font:"DM Sans",system-ui,sans-serif}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:var(--font);color:var(--ink);background:var(--green);padding:20px}
+  h1{color:var(--royal);font-size:clamp(20px,3vw,26px);margin:0 0 4px}
+  .sub{color:#5a6b76;margin:0 0 16px;font-size:14px;max-width:880px;line-height:1.5}
+  /* button bar pinned to the top — stays put while the sponsor list scrolls under it */
+  .bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;
+    position:sticky;top:0;z-index:30;background:var(--green);
+    margin:0 -20px 14px;padding:12px 20px;box-shadow:0 6px 16px -12px rgba(0,69,171,.4)}
+  button{font-family:var(--font);font-weight:700;border:0;border-radius:10px;padding:10px 15px;cursor:pointer;font-size:14px}
+  .primary{background:var(--royal);color:#fff}
+  .accent{background:var(--orange);color:#fff}
+  .ghost{background:#fff;color:var(--royal);border:1px solid var(--line)}
+  .pill{margin-left:auto;font-size:13px;color:#5a6b76;display:flex;gap:14px;align-items:center}
+  .pill b{color:var(--royal)}
+  .dot{display:inline-flex;align-items:center;gap:6px;font-weight:700;font-size:12px;padding:4px 10px;border-radius:99px;background:#fff;border:1px solid var(--line)}
+  .dot.on{color:var(--ok)} .dot.off{color:#8a96a1}
+  .layout{display:grid;grid-template-columns:1fr 300px;gap:16px;align-items:start}
+  @media(max-width:980px){.layout{grid-template-columns:1fr}}
+  .panel{background:#fff;border-radius:14px;box-shadow:0 10px 30px -18px rgba(0,69,171,.4);padding:12px}
+  table{width:100%;border-collapse:separate;border-spacing:0}
+  th,td{padding:5px 6px;text-align:left;border-bottom:1px solid #eef4f7;vertical-align:middle;font-size:12px}
+  th{color:var(--royal);font-size:10px;text-transform:uppercase;letter-spacing:.04em}
+  tr.staged td{background:#fbfbf4}
+  input[type=text],input[type=number]{width:100%;font-family:var(--font);font-size:12px;padding:5px 6px;border:1px solid var(--line);border-radius:8px;background:#fff}
+  input.name{min-width:96px}      /* keep the name readable, not squished to 2 letters */
+  input[type=number]{width:66px}
+  select.type{font-family:var(--font);font-size:12px;padding:5px 4px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink);max-width:118px}
+  select.tier{font-family:var(--font);font-size:12px;padding:5px 4px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink);max-width:58px}
+  input.website.eg{color:#9fb0ba}   /* example/placeholder https URLs sit light grey */
+  .pv-type{font-size:9px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-top:2px}
+  .act{display:flex;flex-direction:column;align-items:center;gap:3px;white-space:nowrap}
+  .act input{width:17px;height:17px}
+  .tag{font-size:10px;font-weight:700;padding:2px 6px;border-radius:99px}
+  .tag.live{background:#e3f4e8;color:var(--ok)} .tag.staged{background:#fbf0d8;color:var(--warn)}
+  .logocell{display:flex;align-items:center;gap:6px}
+  .thumb{width:28px;height:28px;border-radius:6px;border:1px solid var(--line);object-fit:contain;background:#fff;flex:0 0 auto;display:none}
+  .thumb.show{display:block}
+  .choose{background:#eef6fb;color:var(--royal);border:1px solid var(--line);padding:5px 7px;border-radius:8px;font-size:11px;white-space:nowrap}
+  .lf{width:74px;min-width:0}
+  input.location.lc{width:92px;min-width:0}
+  .note{font-size:10px;color:var(--warn);display:block;margin-top:3px}
+  .del{background:#fff;color:var(--bad);border:1px solid #f0d2cd;padding:5px 7px;border-radius:8px;font-size:11px}
+  .help{margin-top:16px;font-size:12px;color:#5a6b76;max-width:920px;line-height:1.55}
+  .help code{background:#fff;padding:1px 5px;border-radius:5px;border:1px solid var(--line)}
+  .err{color:var(--bad);font-weight:700}
+  /* live preview */
+  .pv-h{color:var(--royal);font-weight:800;font-size:13px;text-transform:uppercase;letter-spacing:.04em;margin:2px 4px 10px}
+  .pv-band{display:grid;justify-content:center;gap:6px;margin-bottom:6px}
+  .pv-card{background:#fff;border:1px solid #e7f0f5;border-radius:9px;min-height:46px;display:flex;flex-direction:column;
+           align-items:center;justify-content:center;gap:3px;padding:6px 5px;text-align:center;box-shadow:0 6px 14px -12px rgba(0,69,171,.5)}
+  .pv-card img{max-width:100%;max-height:28px;object-fit:contain}
+  .pv-name{font-weight:700;color:var(--royal);font-size:10px;line-height:1.1}
+  .pv-empty{color:#8a96a1;font-size:12px;text-align:center;padding:20px}
+</style>
+</head>
+<body>
+  <h1>Sponsor Admin</h1>
+  <p class="sub"><b>Tier</b> sets the tile size band — <b>A</b> = biggest (2 per row) … <b>D</b> = smallest (5 per row).
+  Within a tier, bigger <b>$ amount</b> sorts higher (the amount is never shown publicly).
+  Leave a row <b>Staged</b> (Active off) while you wait on a logo — staged rows stay off the live page.
+  <b>Connect the project folder</b> once and logos copy into <code>/logos/</code> and Save writes <code>sponsors.csv</code> to disk.</p>
+
+  <div class="bar">
+    <button class="primary" id="connect">🔌 Connect project folder</button>
+    <button class="ghost" id="add">+ Add sponsor</button>
+    <button class="accent" id="save">💾 Save sponsors.csv</button>
+    <span class="pill">
+      <span class="dot off" id="conn">● not connected</span>
+      <span id="count"></span>
+    </span>
+  </div>
+
+  <div class="panel">
+    <table>
+      <thead><tr><th>Active</th><th>Name</th><th>Tier</th><th>$</th><th>Logo</th><th>Website</th><th>Location</th><th>Type</th><th></th></tr></thead>
+      <tbody id="rows"></tbody>
+    </table>
+  </div>
+
+  <p class="help">
+    <b>Connected (Chrome/Edge, running locally):</b> “Choose” copies the picked image into <code>/logos/</code> with a tidy
+    filename and Save writes <code>sponsors.csv</code> — refresh the live page to see it.
+    <b>Any other browser:</b> “Choose” still sets the filename + preview, Save <i>downloads</i> <code>sponsors.csv</code>,
+    and you drop the PNG into <code>/logos/</code> yourself. Logos should be transparent PNG (square ~400×400 or wide ~600×240).
+    A row that's Active with no logo still publishes — as a clean text-only card.<br>
+    <span id="msg"></span>
+  </p>
+
+<script>
+const CSV_URL="sponsors.csv";
+const rowsEl=document.getElementById("rows");
+let dirHandle=null;                       // project folder (File System Access)
+const fsaSupported = "showDirectoryPicker" in window;
+
+/* ---------- CSV ---------- */
+function parseCSV(text){
+  const rows=[];let row=[],cur="",q=false;
+  for(let i=0;i<text.length;i++){const c=text[i];
+    if(q){ if(c=='"'&&text[i+1]=='"'){cur+='"';i++;} else if(c=='"'){q=false;} else cur+=c; }
+    else{ if(c=='"')q=true; else if(c==',') {row.push(cur);cur="";}
+      else if(c=='\n'){row.push(cur);rows.push(row);row=[];cur="";} else if(c=='\r'){} else cur+=c; } }
+  if(cur.length||row.length){row.push(cur);rows.push(row);}
+  if(!rows.length)return[];
+  const head=rows.shift().map(h=>h.trim().toLowerCase());
+  return rows.filter(r=>r.some(x=>x.trim()!="")).map(r=>{const o={};head.forEach((h,i)=>o[h]=(r[i]||"").trim());return o;});
+}
+const isYes=v=>/^(y|yes|true|1|active|on|x|live)$/i.test(String(v||"").trim());
+const csvCell=v=>{v=String(v==null?"":v);return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v;};
+function cleanBase(s){return String(s||"").toLowerCase().replace(/&/g,"and").replace(/[^a-z0-9.]+/g,"-").replace(/-+/g,"-").replace(/^-|-$/g,"");}
+function logoFilename(file,sponsorName){
+  const ext=(file.name.match(/\.[a-z0-9]+$/i)||[".png"])[0].toLowerCase();
+  return (cleanBase(sponsorName)||cleanBase(file.name.replace(/\.[^.]+$/,""))||"logo")+ext;
+}
+
+/* ---------- rows ---------- */
+function makeRow(d={}){
+  const tr=document.createElement("tr");
+  tr.innerHTML=`
+    <td><label class="act"><input type="checkbox" class="active"><span class="tag"></span></label></td>
+    <td><input type="text" class="name" placeholder="Sponsor name"></td>
+    <td><select class="tier">
+      <option>A</option>
+      <option>B</option>
+      <option>C</option>
+      <option>D</option>
+    </select></td>
+    <td><input type="number" class="amount" min="0" step="50" placeholder="0"></td>
+    <td><div class="logocell">
+      <img class="thumb" alt="">
+      <input type="text" class="logo lf" placeholder="acme.png">
+      <button class="choose" type="button">Choose…</button>
+      <input type="file" class="file" accept="image/*" hidden>
+    </div><span class="note"></span></td>
+    <td><input type="text" class="website" placeholder="https://…"></td>
+    <td><input type="text" class="location lc" placeholder="e.g. Manly"></td>
+    <td><select class="type">
+      <option value="">—</option>
+      <option>Raffle</option>
+      <option>Silent Auction</option>
+      <option>Auction &amp; Raffle</option>
+      <option>Supporter</option>
+    </select></td>
+    <td><button class="del" type="button">Delete</button></td>`;
+  tr.querySelector(".active").checked = d.active===undefined ? true : isYes(d.active);
+  tr.querySelector(".name").value=d.name||"";
+  tr.querySelector(".tier").value=(/^[A-D]$/i.test((d.tier||"").trim())?d.tier.trim().toUpperCase():"D");
+  tr.querySelector(".amount").value=d.amount||"";
+  tr.querySelector(".logo").value=d.logo||"";
+  tr.querySelector(".website").value=d.website||"";
+  tr.querySelector(".location").value=d.location||"";
+  tr.querySelector(".type").value=d.type||"";
+  const thumb=tr.querySelector(".thumb");
+  if(d.logo){ thumb.src=CSV_URL.replace(/[^/]*$/,"")+"logos/"+d.logo; thumb.classList.add("show"); }
+
+  tr.querySelector(".del").onclick=()=>{tr.remove();refresh();};
+  tr.querySelector(".choose").onclick=()=>tr.querySelector(".file").click();
+  tr.querySelector(".file").onchange=e=>onPickLogo(tr,e.target.files[0]);
+  tr.addEventListener("input",refresh);
+  tr.addEventListener("change",refresh);
+  rowsEl.appendChild(tr);
+  return tr;
+}
+
+async function onPickLogo(tr,file){
+  if(!file) return;
+  const name=tr.querySelector(".name").value.trim();
+  const fname=logoFilename(file,name);
+  const thumb=tr.querySelector(".thumb");
+  thumb.src=URL.createObjectURL(file); thumb.classList.add("show");
+  thumb.dataset.local="1";
+  tr.querySelector(".logo").value=fname;
+  if(dirHandle){
+    try{
+      const logos=await dirHandle.getDirectoryHandle("logos",{create:true});
+      const fh=await logos.getFileHandle(fname,{create:true});
+      const w=await fh.createWritable(); await w.write(file); await w.close();
+      msg(`Copied <code>${fname}</code> into /logos/.`);
+    }catch(err){ msg(`<span class="err">Couldn't copy logo: ${err.message}</span>`); }
+  }else{
+    msg(`Set logo filename <code>${fname}</code>. Connect the folder to copy it in, or drop it into /logos/ yourself.`);
+  }
+  refresh();
+}
+
+/* ---------- status + preview ---------- */
+function rowData(){
+  return [...rowsEl.children].map(tr=>({
+    el:tr,
+    active:tr.querySelector(".active").checked,
+    name:tr.querySelector(".name").value.trim(),
+    tier:tr.querySelector(".tier").value,
+    amount:Number(tr.querySelector(".amount").value)||0,
+    logo:tr.querySelector(".logo").value.trim(),
+    thumb:tr.querySelector(".thumb"),
+    website:tr.querySelector(".website").value.trim(),
+    location:tr.querySelector(".location").value.trim(),
+    type:tr.querySelector(".type").value
+  }));
+}
+function refresh(){
+  let live=0,staged=0;
+  rowData().forEach(r=>{
+    r.el.classList.toggle("staged",!r.active);
+    const tag=r.el.querySelector(".tag"); tag.textContent=r.active?"LIVE":"STAGED"; tag.className="tag "+(r.active?"live":"staged");
+    r.el.querySelector(".note").textContent=(r.active&&!r.logo)?"⚠ no logo — shows as text only":"";
+    r.el.querySelector(".website").classList.toggle("eg", !r.website || /example\.com/i.test(r.website));
+    r.active?live++:staged++;
+  });
+  document.getElementById("count").innerHTML=`<b>${live}</b> live · ${staged} staged`;
+}
+function msg(h){ document.getElementById("msg").innerHTML=h; }
+
+/* ---------- load / connect / save ---------- */
+function fillRows(arr){ rowsEl.innerHTML=""; arr.forEach(makeRow); if(!rowsEl.children.length)makeRow(); refresh(); }
+
+async function loadFromFetch(){
+  try{
+    const res=await fetch(CSV_URL,{cache:"no-store"}); if(!res.ok)throw new Error(res.status);
+    fillRows(parseCSV(await res.text()));
+  }catch(e){
+    msg('<span class="err">Could not load sponsors.csv ('+e.message+').</span> Open this over http://, not file://. Starting blank.');
+    fillRows([]);
+  }
+}
+
+async function connect(){
+  if(!fsaSupported){ msg('<span class="err">This browser can\'t write to the folder.</span> Use Chrome/Edge for copy-in, or just use Choose + Save (download).'); return; }
+  try{
+    dirHandle=await window.showDirectoryPicker({mode:"readwrite",id:"manly-trivia"});
+    // load sponsors.csv straight from the chosen folder so we edit the real file
+    try{
+      const fh=await dirHandle.getFileHandle(CSV_URL); const f=await fh.getFile();
+      fillRows(parseCSV(await f.text()));
+    }catch(_){ /* no csv yet — keep current rows */ }
+    const d=document.getElementById("conn"); d.textContent="● connected"; d.className="dot on";
+    msg("Folder connected — logos copy into /logos/ and Save writes to disk.");
+  }catch(e){ if(e.name!=="AbortError") msg('<span class="err">Connect failed: '+e.message+'</span>'); }
+}
+
+function buildCSV(){
+  const out=["Active,Name,Tier,Amount,Logo,Website,Location,Type"];
+  rowData().forEach(r=>{ if(!r.name)return;
+    out.push([r.active?"yes":"no", r.name, r.tier, r.amount||"0", r.logo, r.website, r.location, r.type].map(csvCell).join(",")); });
+  return out.join("\n")+"\n";
+}
+async function save(){
+  const text=buildCSV();
+  if(dirHandle){
+    try{
+      const fh=await dirHandle.getFileHandle(CSV_URL,{create:true});
+      const w=await fh.createWritable(); await w.write(text); await w.close();
+      msg("Saved <code>sponsors.csv</code> to disk. Refresh the live page to see it.");
+    }catch(e){ msg('<span class="err">Save failed: '+e.message+'</span>'); }
+  }else{
+    const a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([text],{type:"text/csv"}));
+    a.download="sponsors.csv"; a.click();
+    msg("Downloaded <code>sponsors.csv</code> — drop it on the host to publish.");
+  }
+}
+
+document.getElementById("connect").onclick=connect;
+document.getElementById("add").onclick=()=>{const tr=makeRow();refresh();tr.querySelector(".name").focus();};
+document.getElementById("save").onclick=save;
+if(!fsaSupported){ const b=document.getElementById("connect"); b.textContent="💾 Download mode"; b.title="This browser saves by download"; }
+loadFromFetch();
+</script>
+</body>
+</html>

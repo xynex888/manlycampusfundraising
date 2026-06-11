@@ -1,0 +1,12 @@
+Active,Name,Tier,Amount,Logo,Website,Location,Type
+yes,Northside Co.,A,5000,northside-co.png,https://example.com,Manly,Silent Auction
+yes,Dad & Dave's Brewing,A,4200,dad-and-daves.png,https://www.dadndavesbrewing.com/,Dee Why,Raffle
+yes,Glacier Dental,B,3500,,https://example.com,Warringah Mall,Supporter
+yes,Northern Beaches Banners,B,2500,,http://www.northernbeachesbanners.com.au/,Brookvale,Auction & Raffle
+yes,Alpine Motors,B,2000,,https://example.com,Manly,Supporter
+yes,The Snug Bookshop,C,1500,,https://example.com,Dee Why,Raffle
+yes,Blizzard Plumbing,C,1200,,https://example.com,Freshwater,Supporter
+yes,Iceberg Eyewear,C,800,,https://example.com,Manly,Silent Auction
+yes,Tundra Tyres,D,600,,https://example.com,Brookvale,Auction & Raffle
+yes,Snowdrop Florist,D,500,,https://example.com,Warringah Mall,Raffle
+no,Summit Signs (awaiting logo),B,3000,,https://example.com,Dee Why,Supporter
