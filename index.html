@@ -92,6 +92,7 @@
   .cta{text-align:center;padding:clamp(20px,4vw,44px) 16px clamp(48px,9vw,88px)}
   .bigcta{display:inline-block;width:100%;max-width:760px;margin:0 auto;text-decoration:none;border-radius:24px;transition:transform .16s ease}
   .bigcta img{display:block;width:100%;height:auto}
+  .tixinfo{display:block;width:100%;max-width:720px;height:auto;margin:0 auto clamp(20px,4vw,36px)}
   .bigcta:hover,.bigcta:focus-visible{transform:translateY(-3px);outline:none}
   .bigcta:focus-visible{box-shadow:0 0 0 4px rgba(0,69,171,.45)}
   .txtlink{display:inline-block;color:var(--orange);font-weight:800;font-size:clamp(24px,7vw,46px);text-decoration:underline}
@@ -127,6 +128,7 @@
 
   <!-- HUGE CLICK HERE -->
   <section class="cta">
+    <img class="tixinfo" src="assets/trivia-tickets-info.png" alt="Trivia Tickets — it's easier this year. 1. If you have a group, each person buys a ticket and lists their team name so you sit together. 2. If you don't have a team, just put your year group and we'll do the rest.">
     <a class="bigcta" id="ticketsBtn" href="#" target="_blank" rel="noopener" aria-label="Click here for tickets (opens in new tab)">
       <img src="assets/webbutton.png" alt="Click here for tickets"
            onerror="this.replaceWith(Object.assign(document.createElement('span'),{textContent:'Get tickets \u2192',className:'txtlink'}))">
