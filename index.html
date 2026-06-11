@@ -193,7 +193,7 @@ function normalise(rows){
     tier:(/^[A-D]$/i.test(String(r.tier||"").trim()) ? String(r.tier).trim().toUpperCase() : "D"),  // A=biggest band … D=smallest; blank/invalid -> D
     location:(r.location||r.area||r.suburb||"").trim(),   // place line above the type tag
     type:(r.type||r.category||"").trim(),   // RAFFLE / SILENT AUCTION / SUPPORTER tag
-    logo:resolveLogo(r.logo||r.logourl||""), website:r.website||r.url||"" })).filter(s=>s.name && s.active);
+    logo:resolveLogo(r.logo||r.logourl||""), website:(w=>{w=String(r.website||r.url||"").trim();return w&&!/^https?:\/\//i.test(w)?"https://"+w:w;})() })).filter(s=>s.name && s.active);
 }
 function makeCard(s){
   const link=s.website&&s.website!="#";
