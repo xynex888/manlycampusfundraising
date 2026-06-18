@@ -16,10 +16,12 @@ body{margin:0;font-family:'DM Sans',system-ui,sans-serif;color:var(--ink);backgr
 header.head{background:var(--royal);color:#fff;padding:18px 20px;text-align:center}
 header.head h1{margin:0;font-size:clamp(20px,3.4vw,30px);font-weight:800;letter-spacing:.5px}
 header.head p{margin:4px 0 0;opacity:.85;font-size:13px}
+header.head .sep{opacity:.45;margin:0 8px;font-weight:400}
+header.head a{color:#fff;text-decoration:underline}
 .wrap{max-width:1180px;margin:0 auto;padding:16px}
 .bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-bottom:12px;position:sticky;top:0;z-index:6;background:var(--bg);padding:10px 0;border-bottom:1px solid var(--line)}
 .ctl{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-.rbtn{font:inherit;font-weight:700;border:1px solid var(--line);background:#fff;color:var(--royal);border-radius:8px;padding:6px 12px;cursor:pointer}
+.rbtn{font:inherit;font-weight:700;border:1px solid #e0ac00;background:#FFC400;color:#1d2330;border-radius:8px;padding:6px 12px;cursor:pointer}
 .rbtn:active{transform:translateY(1px)}
 .chips{display:flex;flex-wrap:wrap;gap:6px}
 .chip{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px 11px;font-size:12.5px;font-weight:600;color:var(--muted)}
@@ -29,7 +31,7 @@ header.head p{margin:4px 0 0;opacity:.85;font-size:13px}
 .sort button.on{background:var(--royal);color:#fff;border-color:var(--royal)}
 .tablewrap{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:auto}
 table{border-collapse:collapse;width:100%;font-size:14.5px;min-width:760px}
-thead th{position:sticky;top:0;z-index:4;background:#eef2f8;text-align:left;padding:10px 12px;font-weight:700;color:var(--royal);border-bottom:2px solid var(--line);white-space:nowrap;user-select:none;text-transform:uppercase;letter-spacing:.4px}
+thead th{position:sticky;top:0;z-index:4;background:#eef2f8;text-align:left;padding:10px 12px;font-weight:700;color:var(--royal);border-bottom:2px solid var(--line);white-space:nowrap;cursor:pointer;user-select:none;text-transform:uppercase;letter-spacing:.4px}
 thead th .arr{opacity:.5;font-size:11px}
 tbody td{padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
 tbody tr:hover{background:#fafbfe}
@@ -66,12 +68,11 @@ body.locked{overflow:hidden}
 </form></div>
 <!-- Banner GFX slot — operator drops assets/hitlist-banner.png; hidden until present -->
 <div class="banner"><img id="banner" src="assets/hitlist-banner.png?v=1" alt="" onerror="this.parentNode.style.display='none'"></div>
-<header class="head"><h1>Donation Hit List</h1><p>Live view of the master sheet — read only. Edit in the sheet.</p></header>
+<header class="head"><h1>Fundraising 2026 <span class="sep">|</span> Donor Hit List</h1><p>Viewing ONLY <span class="sep">|</span> Click the blue column name to sort up/down <span class="sep">|</span> email <a href="mailto:donations@manlycampusfundraising.org">donations@manlycampusfundraising.org</a> with updates</p></header>
 <div class="wrap">
   <div class="bar">
     <div class="chips" id="chips"></div>
-    <div class="ctl"><button id="refresh" class="rbtn" title="Reload latest from the sheet">⟳ Refresh</button>
-    <div class="sort">Sort: <button data-sort="supporter" class="on">Name</button><button data-sort="status">Status</button><button data-sort="p&c contact">Owner</button></div></div>
+    <div class="ctl"><button id="refresh" class="rbtn" title="Reload latest from the sheet">⟳ Refresh</button></div>
   </div>
   <div class="tablewrap"><table><thead id="thead"></thead><tbody id="tbody"></tbody></table></div>
   <div class="note" id="foot">Loading…</div>
@@ -117,7 +118,7 @@ function render(){
     else d=String(a[sortKey]||"").localeCompare(String(b[sortKey]||""),undefined,{sensitivity:"base"});
     return d*sortDir;
   });
-  document.getElementById("thead").innerHTML="<tr>"+CONFIG.columns.map(c=>`<th>${c.label} <span class="arr">${sortKey===c.key?(sortDir>0?"▾":"▴"):""}</span></th>`).join("")+"</tr>";
+  document.getElementById("thead").innerHTML="<tr>"+CONFIG.columns.map(c=>`<th data-sort="${c.key}">${c.label} <span class="arr">${sortKey===c.key?(sortDir>0?"▾":"▴"):""}</span></th>`).join("")+"</tr>";
   document.getElementById("tbody").innerHTML=rows.map(r=>"<tr>"+CONFIG.columns.map(c=>{
     let v=r[c.key]||"";
     if(c.badge)return `<td><span class="badge ${statusClass(v)}">${esc(v)||"—"}</span></td>`;
@@ -139,7 +140,7 @@ async function boot(){
   try{
     const res=await fetch(CONFIG.csvUrl,{cache:"no-store"});
     if(!res.ok)throw new Error("HTTP "+res.status);
-    DATA=parseCSV(await res.text()).filter(r=>(r.supporter||"").trim());
+    DATA=parseCSV(await res.text()).filter(r=>(r.supporter||"").trim() && String(r.status||"").trim().toLowerCase()!=="no");
     if(!DATA.length){document.getElementById("foot").textContent="No rows found.";return;}
     render();
   }catch(err){document.getElementById("foot").innerHTML='<span class="err">Could not load the sheet: '+esc(err.message)+'</span>';}
