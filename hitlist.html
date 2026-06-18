@@ -87,13 +87,15 @@ function parseCSV(text){
 }
 function statusClass(v){return "s-"+String(v||"").toLowerCase().replace(/[^a-z]/g,"");}
 function statusRank(v){const i=CONFIG.statusOrder.indexOf(String(v||"").toLowerCase());return i<0?CONFIG.statusOrder.length:i;}
-let DATA=[],sortKey="supporter";
+let DATA=[],sortKey="supporter",sortDir=1;
 function render(){
   const rows=DATA.slice().sort((a,b)=>{
-    if(sortKey===CONFIG.statusKey){const d=statusRank(a[sortKey])-statusRank(b[sortKey]);if(d)return d;return (a.supporter||"").localeCompare(b.supporter||"");}
-    return String(a[sortKey]||"").localeCompare(String(b[sortKey]||""),undefined,{sensitivity:"base"});
+    let d;
+    if(sortKey===CONFIG.statusKey){d=statusRank(a[sortKey])-statusRank(b[sortKey]);if(!d)d=(a.supporter||"").localeCompare(b.supporter||"");}
+    else d=String(a[sortKey]||"").localeCompare(String(b[sortKey]||""),undefined,{sensitivity:"base"});
+    return d*sortDir;
   });
-  document.getElementById("thead").innerHTML="<tr>"+CONFIG.columns.map(c=>`<th data-sort="${c.key}">${c.label} <span class="arr">${sortKey===c.key?"▾":""}</span></th>`).join("")+"</tr>";
+  document.getElementById("thead").innerHTML="<tr>"+CONFIG.columns.map(c=>`<th data-sort="${c.key}">${c.label} <span class="arr">${sortKey===c.key?(sortDir>0?"▾":"▴"):""}</span></th>`).join("")+"</tr>";
   document.getElementById("tbody").innerHTML=rows.map(r=>"<tr>"+CONFIG.columns.map(c=>{
     let v=r[c.key]||"";
     if(c.badge)return `<td><span class="badge ${statusClass(v)}">${esc(v)||"—"}</span></td>`;
@@ -107,7 +109,7 @@ function render(){
   document.getElementById("foot").textContent=rows.length+" rows · updates when the sheet is edited";
 }
 function esc(s){return String(s).replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));}
-document.addEventListener("click",e=>{const b=e.target.closest("[data-sort]");if(b){sortKey=b.getAttribute("data-sort");render();}});
+document.addEventListener("click",e=>{const b=e.target.closest("[data-sort]");if(b){const k=b.getAttribute("data-sort");if(k===sortKey)sortDir*=-1;else{sortKey=k;sortDir=1;}render();}});
 (async function(){
   try{
     const res=await fetch(CONFIG.csvUrl,{cache:"no-store"});
