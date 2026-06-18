@@ -25,7 +25,7 @@ header.head p{margin:4px 0 0;opacity:.85;font-size:13px}
 .sort button{font:inherit;font-weight:600;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:8px;padding:6px 11px;cursor:pointer}
 .sort button.on{background:var(--royal);color:#fff;border-color:var(--royal)}
 .tablewrap{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:auto}
-table{border-collapse:collapse;width:100%;font-size:13.5px;min-width:760px}
+table{border-collapse:collapse;width:100%;font-size:14.5px;min-width:760px}
 thead th{position:sticky;top:0;background:#eef2f8;text-align:left;padding:10px 12px;font-weight:700;color:var(--royal);border-bottom:2px solid var(--line);white-space:nowrap;cursor:pointer;user-select:none}
 thead th .arr{opacity:.5;font-size:11px}
 tbody td{padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
@@ -54,8 +54,8 @@ body.locked{overflow:hidden}
 <body class="locked">
 <div id="gate" class="gate"><form class="gatebox" onsubmit="return false">
   <h2>Manly Fundraising</h2><p>Team access</p>
-  <input id="gu" placeholder="Username" autocomplete="username">
-  <input id="gp" type="password" placeholder="Password" autocomplete="current-password">
+  <input id="gu" placeholder="Username" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false">
+  <input id="gp" type="password" placeholder="Password" autocomplete="current-password" autocapitalize="none" autocorrect="off" spellcheck="false">
   <button id="glogin" type="button">Enter</button>
   <div id="gerr" class="gerr"></div>
 </form></div>
