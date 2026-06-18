@@ -42,9 +42,24 @@ td.ask{min-width:240px;color:#39414f}
 .s-done{background:#e3f7e8;color:#1c7a3a}
 .note{color:var(--muted);font-size:12px;text-align:center;padding:16px}
 .err{color:#b13838}
+.gate{position:fixed;inset:0;background:var(--royal);display:flex;align-items:center;justify-content:center;z-index:999;padding:20px}
+.gatebox{background:#fff;border-radius:14px;padding:26px 24px;max-width:320px;width:100%;text-align:center;box-shadow:0 12px 40px rgba(0,0,0,.25)}
+.gatebox h2{margin:0 0 2px;color:var(--royal);font-size:20px}
+.gatebox p{margin:0 0 14px;color:var(--muted);font-size:13px}
+.gatebox input{width:100%;padding:11px 12px;margin:6px 0;border:1px solid var(--line);border-radius:9px;font:inherit}
+.gatebox button{width:100%;padding:11px;margin-top:10px;border:0;border-radius:9px;background:var(--orange);color:#fff;font:inherit;font-weight:700;cursor:pointer}
+.gerr{color:#b13838;font-size:12.5px;min-height:16px;margin-top:8px}
+body.locked{overflow:hidden}
 </style>
 </head>
-<body>
+<body class="locked">
+<div id="gate" class="gate"><form class="gatebox" onsubmit="return false">
+  <h2>Manly Fundraising</h2><p>Team access</p>
+  <input id="gu" placeholder="Username" autocomplete="username">
+  <input id="gp" type="password" placeholder="Password" autocomplete="current-password">
+  <button id="glogin" type="button">Enter</button>
+  <div id="gerr" class="gerr"></div>
+</form></div>
 <!-- Banner GFX slot — operator drops assets/plan-banner.png; hidden until present -->
 <div class="banner"><img id="banner" src="assets/plan-banner.png?v=1" alt="" onerror="this.parentNode.style.display='none'"></div>
 <header class="head"><h1>Event Worklist</h1><p>Live view of the planning sheet — read only. Edit in the sheet.</p></header>
@@ -123,7 +138,7 @@ function render(){
 }
 function esc(s){return String(s).replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));}
 document.addEventListener("click",e=>{const b=e.target.closest("[data-sort]");if(b){const k=b.getAttribute("data-sort");if(k===sortKey)sortDir*=-1;else{sortKey=k;sortDir=1;}render();}});
-(async function(){
+async function boot(){
   try{
     const res=await fetch(CONFIG.csvUrl,{cache:"no-store"});
     if(!res.ok)throw new Error("HTTP "+res.status);
@@ -131,7 +146,12 @@ document.addEventListener("click",e=>{const b=e.target.closest("[data-sort]");if
     if(!DATA.length){document.getElementById("foot").textContent="No jobs found.";return;}
     render();
   }catch(err){document.getElementById("foot").innerHTML='<span class="err">Could not load the sheet: '+esc(err.message)+'</span>';}
-})();
+}
+const CREDS={user:"raise",pass:"moneynow"};
+function showApp(){document.getElementById("gate").style.display="none";document.body.classList.remove("locked");boot();}
+function tryLogin(){const u=(document.getElementById("gu").value||"").trim(),p=document.getElementById("gp").value||"";if(u===CREDS.user&&p===CREDS.pass){sessionStorage.setItem("mcf_auth","1");showApp();}else{document.getElementById("gerr").textContent="Wrong username or password.";}}
+if(sessionStorage.getItem("mcf_auth")==="1"){showApp();}
+else{document.getElementById("glogin").addEventListener("click",tryLogin);document.getElementById("gp").addEventListener("keydown",e=>{if(e.key==="Enter")tryLogin();});document.getElementById("gu").focus();}
 </script>
 </body>
 </html>
