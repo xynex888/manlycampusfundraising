@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Manly Fundraising — Event Worklist</title>
+<title>Manly Fundraising — To-Do by Date</title>
 <meta name="robots" content="noindex,nofollow">
 <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2032%2032'%3E%3Crect%20width='32'%20height='32'%20rx='7'%20fill='%230045AB'/%3E%3Ctext%20x='16'%20y='23'%20font-size='22'%20text-anchor='middle'%3E%E2%9D%84%EF%B8%8F%3C/text%3E%3C/svg%3E">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -17,6 +17,9 @@ header.head{background:var(--royal);color:#fff;padding:18px 20px;text-align:cent
 header.head h1{margin:0;font-size:clamp(20px,3.4vw,30px);font-weight:800;letter-spacing:.5px}
 header.head p{margin:4px 0 0;opacity:.85;font-size:13px}
 .wrap{max-width:1180px;margin:0 auto;padding:16px}
+.nav{margin-bottom:10px;font-size:13px;color:var(--muted)}
+.nav a{color:var(--royal);font-weight:700;text-decoration:none}
+.nav b{color:var(--ink)}
 .bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-bottom:12px}
 .chips{display:flex;flex-wrap:wrap;gap:6px}
 .chip{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px 11px;font-size:12.5px;font-weight:600;color:var(--muted)}
@@ -30,15 +33,9 @@ thead th{position:sticky;top:0;background:#eef2f8;text-align:left;padding:10px 1
 thead th .arr{opacity:.5;font-size:11px}
 tbody td{padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
 tbody tr:hover{background:#fafbfe}
-tr.grouphead td{background:var(--royal);color:#fff;font-weight:800;font-size:13.5px;letter-spacing:.4px;padding:9px 12px}
-tr.grouphead .cnt{opacity:.7;font-weight:600}
-tr.grouphead:hover td{background:var(--royal)}
 td.name{font-weight:700;min-width:200px}
-td.due{white-space:nowrap;min-width:120px}
+td.datehero{white-space:nowrap;min-width:130px;font-weight:800;color:var(--royal)}
 td.ask{min-width:240px;color:#39414f}
-.nav{margin-bottom:10px;font-size:13px;color:var(--muted)}
-.nav a{color:var(--royal);font-weight:700;text-decoration:none}
-.nav b{color:var(--ink)}
 .badge{display:inline-block;padding:2px 9px;border-radius:999px;font-size:11.5px;font-weight:700;white-space:nowrap;background:#eceff4;color:#55606e}
 .s-plan{background:#eef1f6;color:#5b6675}
 .s-doing,.s-inprogress{background:#fff3e0;color:#b3600f}
@@ -64,14 +61,14 @@ body.locked{overflow:hidden}
   <button id="glogin" type="button">Enter</button>
   <div id="gerr" class="gerr"></div>
 </form></div>
-<!-- Banner GFX slot — operator drops assets/plan-banner.png; hidden until present -->
-<div class="banner"><img id="banner" src="assets/plan-banner.png?v=1" alt="" onerror="this.parentNode.style.display='none'"></div>
-<header class="head"><h1>Fundraising Event Worklist</h1><p>Live view of the planning sheet — read only. Edit in the sheet.</p></header>
+<!-- Banner GFX slot — operator drops assets/schedule-banner.png; hidden until present -->
+<div class="banner"><img id="banner" src="assets/schedule-banner.png?v=1" alt="" onerror="this.parentNode.style.display='none'"></div>
+<header class="head"><h1>To-Do by Date</h1><p>Everything still to do — soonest first. Done items hidden. Read only.</p></header>
 <div class="wrap">
-  <div class="nav"><b>Grouped by phase</b> · <a href="/schedule">By date — to-do list ▸</a></div>
+  <div class="nav"><a href="/plan">◂ Grouped worklist</a> · <b>By date — to-do list</b></div>
   <div class="bar">
     <div class="chips" id="chips"></div>
-    <div class="sort">Sort within group: <button data-sort="status" class="on">Status</button><button data-sort="owner">Owner</button><button data-sort="date due">Due</button><button data-sort="item">Item</button></div>
+    <div class="sort">Sort: <button data-sort="date due" class="on">Date</button><button data-sort="phase">Phase</button><button data-sort="owner">Owner</button><button data-sort="status">Status</button></div>
   </div>
   <div class="tablewrap"><table><thead id="thead"></thead><tbody id="tbody"></tbody></table></div>
   <div class="note" id="foot">Loading…</div>
@@ -83,18 +80,26 @@ const CONFIG={
   statusKey:"status",
   statusOrder:["plan","doing","in progress","blocked","done"],
   idKey:"item",
-  groupKey:"phase",
+  dateKey:"date due",
   columns:[
     {key:"phase",label:"Phase"},
-    {key:"status",label:"Status",badge:true},
+    {key:"date due",label:"Date",cls:"datehero"},
     {key:"owner",label:"Owner"},
-    {key:"date due",label:"Due",cls:"due"},
+    {key:"status",label:"Status",badge:true},
     {key:"item",label:"Item",cls:"name"},
     {key:"cost",label:"Cost"},
     {key:"amount",label:"Amount"},
     {key:"unresolved / notes",label:"Notes",cls:"ask"}
   ]
 };
+const MONTHS={jan:0,feb:1,mar:2,apr:3,may:4,jun:5,jul:6,aug:7,sep:8,oct:9,nov:10,dec:11};
+function dateVal(s){
+  s=String(s||"").trim(); if(!s)return 999999;                 // undated → bottom
+  const m=s.match(/(\d{1,2})\s*([A-Za-z]{3})/);
+  if(!m)return 999998;
+  const mon=MONTHS[m[2].toLowerCase()]; if(mon===undefined)return 999998;
+  return mon*100+parseInt(m[1],10);
+}
 function parseCSV(text){
   const rows=[];let row=[],cur="",q=false;
   for(let i=0;i<text.length;i++){const c=text[i];
@@ -111,37 +116,26 @@ function parseCSV(text){
 }
 function statusClass(v){return "s-"+String(v||"").toLowerCase().replace(/[^a-z]/g,"");}
 function statusRank(v){const i=CONFIG.statusOrder.indexOf(String(v||"").toLowerCase());return i<0?CONFIG.statusOrder.length:i;}
-let DATA=[],sortKey="status",sortDir=1;
+let DATA=[],sortKey="date due",sortDir=1;
 function render(){
-  const cols=CONFIG.columns.filter(c=>c.key!==CONFIG.groupKey);   // phase becomes the heading, not a column
-  const cmp=(a,b)=>{
+  const rows=DATA.slice().sort((a,b)=>{
     let d;
-    if(sortKey===CONFIG.statusKey){d=statusRank(a[sortKey])-statusRank(b[sortKey]);if(!d)d=String(a[CONFIG.idKey]||"").localeCompare(String(b[CONFIG.idKey]||""));}
-    else d=String(a[sortKey]||"").localeCompare(String(b[sortKey]||""),undefined,{sensitivity:"base"});
+    if(sortKey===CONFIG.dateKey){d=dateVal(a[sortKey])-dateVal(b[sortKey]);if(!d)d=String(a[CONFIG.idKey]||"").localeCompare(String(b[CONFIG.idKey]||""));}
+    else if(sortKey===CONFIG.statusKey){d=statusRank(a[sortKey])-statusRank(b[sortKey]);if(!d)d=dateVal(a[CONFIG.dateKey])-dateVal(b[CONFIG.dateKey]);}
+    else{d=String(a[sortKey]||"").localeCompare(String(b[sortKey]||""),undefined,{sensitivity:"base"});if(!d)d=dateVal(a[CONFIG.dateKey])-dateVal(b[CONFIG.dateKey]);}
     return d*sortDir;
-  };
-  // group by phase, ordered by the phase value (numeric-aware: 01, 02 …); rows sort within each group
-  const order=[],groups={};
-  DATA.forEach(r=>{const g=(r[CONFIG.groupKey]||"—").trim()||"—";if(!(g in groups)){groups[g]=[];order.push(g);}groups[g].push(r);});
-  order.sort((a,b)=>a.localeCompare(b,undefined,{numeric:true,sensitivity:"base"}));
-  document.getElementById("thead").innerHTML="<tr>"+cols.map(c=>`<th data-sort="${c.key}">${c.label} <span class="arr">${sortKey===c.key?(sortDir>0?"▾":"▴"):""}</span></th>`).join("")+"</tr>";
-  let html="";
-  order.forEach(g=>{
-    const rows=groups[g].slice().sort(cmp);
-    const glabel=g.replace(/^\d{1,2}[\s.)\-]+/,"");   // strip the 01/02 sort prefix from the heading
-    html+=`<tr class="grouphead"><td colspan="${cols.length}">${esc(glabel)} <span class="cnt">· ${rows.length}</span></td></tr>`;
-    html+=rows.map(r=>"<tr>"+cols.map(c=>{
-      let v=r[c.key]||"";
-      if(c.badge)return `<td><span class="badge ${statusClass(v)}">${esc(v)||"—"}</span></td>`;
-      return `<td class="${c.cls||""}">${esc(v)}</td>`;
-    }).join("")+"</tr>").join("");
   });
-  document.getElementById("tbody").innerHTML=html;
+  document.getElementById("thead").innerHTML="<tr>"+CONFIG.columns.map(c=>`<th data-sort="${c.key}">${c.label} <span class="arr">${sortKey===c.key?(sortDir>0?"▾":"▴"):""}</span></th>`).join("")+"</tr>";
+  document.getElementById("tbody").innerHTML=rows.map(r=>"<tr>"+CONFIG.columns.map(c=>{
+    let v=r[c.key]||"";
+    if(c.badge)return `<td><span class="badge ${statusClass(v)}">${esc(v)||"—"}</span></td>`;
+    return `<td class="${c.cls||""}">${esc(v)}</td>`;
+  }).join("")+"</tr>").join("");
   const counts={};DATA.forEach(r=>{const s=(r[CONFIG.statusKey]||"—").trim()||"—";counts[s]=(counts[s]||0)+1;});
-  document.getElementById("chips").innerHTML=`<span class="chip"><b>${DATA.length}</b> jobs</span>`+
+  document.getElementById("chips").innerHTML=`<span class="chip"><b>${DATA.length}</b> to do</span>`+
     Object.entries(counts).sort((a,b)=>statusRank(a[0])-statusRank(b[0])).map(([s,n])=>`<span class="chip">${esc(s)} <b>${n}</b></span>`).join("");
   document.querySelectorAll("[data-sort]").forEach(b=>b.classList.toggle("on",b.getAttribute("data-sort")===sortKey));
-  document.getElementById("foot").textContent=DATA.length+" jobs in "+order.length+" groups · updates when the sheet is edited";
+  document.getElementById("foot").textContent=rows.length+" items to do (Done hidden) · updates when the sheet is edited";
 }
 function esc(s){return String(s).replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));}
 document.addEventListener("click",e=>{const b=e.target.closest("[data-sort]");if(b){const k=b.getAttribute("data-sort");if(k===sortKey)sortDir*=-1;else{sortKey=k;sortDir=1;}render();}});
@@ -149,8 +143,8 @@ async function boot(){
   try{
     const res=await fetch(CONFIG.csvUrl,{cache:"no-store"});
     if(!res.ok)throw new Error("HTTP "+res.status);
-    DATA=parseCSV(await res.text()).filter(r=>(r[CONFIG.idKey]||"").trim());
-    if(!DATA.length){document.getElementById("foot").textContent="No jobs found.";return;}
+    DATA=parseCSV(await res.text()).filter(r=>(r[CONFIG.idKey]||"").trim() && String(r[CONFIG.statusKey]||"").trim().toLowerCase()!=="done");
+    if(!DATA.length){document.getElementById("foot").textContent="Nothing outstanding — all done!";return;}
     render();
   }catch(err){document.getElementById("foot").innerHTML='<span class="err">Could not load the sheet: '+esc(err.message)+'</span>';}
 }
