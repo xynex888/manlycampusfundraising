@@ -117,7 +117,7 @@ function statusClass(v){return "s-"+String(v||"").toLowerCase().replace(/[^a-z]/
 function statusRank(v){const i=CONFIG.statusOrder.indexOf(String(v||"").toLowerCase());return i<0?CONFIG.statusOrder.length:i;}
 const MONTHS={jan:0,feb:1,mar:2,apr:3,may:4,jun:5,jul:6,aug:7,sep:8,oct:9,nov:10,dec:11};
 function dateVal(s){s=String(s||"").trim();if(!s)return 999999;const m=s.match(/(\d{1,2})\s*([A-Za-z]{3})/);if(!m)return 999998;const mon=MONTHS[m[2].toLowerCase()];if(mon===undefined)return 999998;return mon*100+parseInt(m[1],10);}
-let DATA=[],sortKey="status",sortDir=1;
+let DATA=[],sortKey="date due",sortDir=1;
 function render(){
   const cols=CONFIG.columns.filter(c=>c.key!==CONFIG.groupKey);   // phase becomes the heading, not a column
   const cmp=(a,b)=>{
