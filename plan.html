@@ -115,14 +115,16 @@ function render(){
     else d=String(a[sortKey]||"").localeCompare(String(b[sortKey]||""),undefined,{sensitivity:"base"});
     return d*sortDir;
   };
-  // group by phase, in first-appearance order (sheet order controls group order)
+  // group by phase, ordered by the phase value (numeric-aware: 01, 02 …); rows sort within each group
   const order=[],groups={};
   DATA.forEach(r=>{const g=(r[CONFIG.groupKey]||"—").trim()||"—";if(!(g in groups)){groups[g]=[];order.push(g);}groups[g].push(r);});
+  order.sort((a,b)=>a.localeCompare(b,undefined,{numeric:true,sensitivity:"base"}));
   document.getElementById("thead").innerHTML="<tr>"+cols.map(c=>`<th data-sort="${c.key}">${c.label} <span class="arr">${sortKey===c.key?(sortDir>0?"▾":"▴"):""}</span></th>`).join("")+"</tr>";
   let html="";
   order.forEach(g=>{
     const rows=groups[g].slice().sort(cmp);
-    html+=`<tr class="grouphead"><td colspan="${cols.length}">${esc(g)} <span class="cnt">· ${rows.length}</span></td></tr>`;
+    const glabel=g.replace(/^\d{1,2}[\s.)\-]+/,"");   // strip the 01/02 sort prefix from the heading
+    html+=`<tr class="grouphead"><td colspan="${cols.length}">${esc(glabel)} <span class="cnt">· ${rows.length}</span></td></tr>`;
     html+=rows.map(r=>"<tr>"+cols.map(c=>{
       let v=r[c.key]||"";
       if(c.badge)return `<td><span class="badge ${statusClass(v)}">${esc(v)||"—"}</span></td>`;
