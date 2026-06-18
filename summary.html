@@ -65,9 +65,11 @@ body.locked{overflow:hidden}
 <script>
 const CONFIG={
   csvUrl:"https://docs.google.com/spreadsheets/d/e/2PACX-1vQcMBBKHXpO2KN_CllGbL5M2NcgXN9DHx7385FZ8XDETYUOQ6GAllv_DHIkfNVH3xC2MiJkMJbTHPnY/pub?gid=1672734792&single=true&output=csv",
-  // the formula in A3 already lays the 7 pulled columns out as SummaryPUB A–G, so just show them in order
+  // the formula in A3 lays the pulled columns out as SummaryPUB A–H; show them in order
   cols:[0,1,2,3,4,5,6,7],
-  defaultSort:1   // SummaryPUB col B = "SORT HERE!"
+  // column names are set HERE (not read from the sheet) so header typos don't matter; order must match the formula
+  labels:["Zone","Sort Here!","P&C Contact","Gala Bid","Supporter","Item for Donation","Value $","Held-by"],
+  defaultSort:1   // col B = "Sort Here!"
 };
 function parseCSV(text){
   const rows=[];let row=[],cur="",q=false;
@@ -84,7 +86,7 @@ let HEAD=[],DATA=[],sortIdx=CONFIG.defaultSort,sortDir=1;
 function render(){
   const C=CONFIG.cols;
   const rows=DATA.slice().sort((a,b)=>String(a[sortIdx]||"").localeCompare(String(b[sortIdx]||""),undefined,{numeric:true,sensitivity:"base"})*sortDir);
-  document.getElementById("thead").innerHTML="<tr>"+C.map(i=>`<th data-idx="${i}">${esc(clean(HEAD[i])||"")} <span class="arr">${sortIdx===i?(sortDir>0?"▾":"▴"):""}</span></th>`).join("")+"</tr>";
+  document.getElementById("thead").innerHTML="<tr>"+C.map((i,pos)=>`<th data-idx="${i}">${esc((CONFIG.labels&&CONFIG.labels[pos])||clean(HEAD[i])||"")} <span class="arr">${sortIdx===i?(sortDir>0?"▾":"▴"):""}</span></th>`).join("")+"</tr>";
   document.getElementById("tbody").innerHTML=rows.map(r=>"<tr>"+C.map(i=>`<td>${esc(r[i]||"")}</td>`).join("")+"</tr>").join("");
   document.getElementById("chips").innerHTML=`<span class="chip"><b>${DATA.length}</b> rows</span>`;
   document.getElementById("foot").textContent=rows.length+" rows · updates when the sheet is edited";
