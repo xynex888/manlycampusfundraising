@@ -140,7 +140,7 @@ async function boot(){
   try{
     const res=await fetch(CONFIG.csvUrl,{cache:"no-store"});
     if(!res.ok)throw new Error("HTTP "+res.status);
-    DATA=parseCSV(await res.text()).filter(r=>(r.supporter||"").trim() && String(r.status||"").trim().toLowerCase()!=="no");
+    DATA=parseCSV(await res.text()).filter(r=>(r.supporter||"").trim() && String(r.status||"").trim().toLowerCase()!=="no" && String(r.zone||"").trim().toLowerCase()!=="no");
     if(!DATA.length){document.getElementById("foot").textContent="No rows found.";return;}
     render();
   }catch(err){document.getElementById("foot").innerHTML='<span class="err">Could not load the sheet: '+esc(err.message)+'</span>';}
