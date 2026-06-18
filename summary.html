@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Manly Fundraising — Donation Hit List</title>
+<title>Manly Fundraising — Published Summary</title>
 <meta name="robots" content="noindex,nofollow">
 <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2032%2032'%3E%3Crect%20width='32'%20height='32'%20rx='7'%20fill='%230045AB'/%3E%3Ctext%20x='16'%20y='23'%20font-size='22'%20text-anchor='middle'%3E%E2%9D%84%EF%B8%8F%3C/text%3E%3C/svg%3E">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -15,7 +15,7 @@ body{margin:0;font-family:'DM Sans',system-ui,sans-serif;color:var(--ink);backgr
 .banner img{display:block;width:100%;max-width:900px;margin:0 auto;height:auto}
 header.head{background:var(--royal);color:#fff;padding:18px 20px;text-align:center}
 header.head h1{margin:0;font-size:clamp(20px,3.4vw,30px);font-weight:800;letter-spacing:.5px}
-header.head p{margin:5px 0 0;opacity:.92;font-size:15px}
+header.head p{margin:4px 0 0;opacity:.85;font-size:13px}
 header.head .sep{opacity:.45;margin:0 8px;font-weight:400}
 header.head a{color:#fff;text-decoration:underline}
 .wrap{max-width:1180px;margin:0 auto;padding:16px}
@@ -26,27 +26,12 @@ header.head a{color:#fff;text-decoration:underline}
 .chips{display:flex;flex-wrap:wrap;gap:6px}
 .chip{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px 11px;font-size:12.5px;font-weight:600;color:var(--muted)}
 .chip b{color:var(--ink)}
-.sort{display:flex;gap:6px;align-items:center;font-size:13px;color:var(--muted)}
-.sort button{font:inherit;font-weight:600;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:8px;padding:6px 11px;cursor:pointer}
-.sort button.on{background:var(--royal);color:#fff;border-color:var(--royal)}
 .tablewrap{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:auto}
 table{border-collapse:collapse;width:100%;font-size:14.5px;min-width:760px}
 thead th{position:sticky;top:0;z-index:4;background:#eef2f8;text-align:left;padding:10px 12px;font-weight:700;color:var(--royal);border-bottom:2px solid var(--line);white-space:nowrap;cursor:pointer;user-select:none;text-transform:uppercase;letter-spacing:.4px}
 thead th .arr{opacity:.5;font-size:11px}
 tbody td{padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
 tbody tr:hover{background:#fafbfe}
-td.name{font-weight:700;white-space:nowrap;text-align:right}
-th.name{text-align:right}
-td.ask{min-width:280px;color:#39414f}
-td.phone{white-space:nowrap;min-width:140px}
-td.addr{min-width:240px}
-.badge{display:inline-block;padding:2px 9px;border-radius:999px;font-size:11.5px;font-weight:700;white-space:nowrap;background:#eceff4;color:#55606e}
-.s-research{background:#eef1f6;color:#5b6675}
-.s-contactme{background:#fff3e0;color:#b3600f}
-.s-awaitingreply{background:#fff8df;color:#8a6d00}
-.s-donating{background:#e3f7e8;color:#1c7a3a}
-.s-received{background:#dff0ff;color:#10619e}
-.s-no{background:#fde9e9;color:#b13838}
 .note{color:var(--muted);font-size:12px;text-align:center;padding:16px}
 .err{color:#b13838}
 .gate{position:fixed;inset:0;background:var(--royal);display:flex;align-items:center;justify-content:center;z-index:999;padding:20px}
@@ -67,9 +52,8 @@ body.locked{overflow:hidden}
   <button id="glogin" type="button">Enter</button>
   <div id="gerr" class="gerr"></div>
 </form></div>
-<!-- Banner GFX slot — operator drops assets/hitlist-banner.png; hidden until present -->
-<div class="banner"><img id="banner" src="assets/hitlist-banner.png?v=1" alt="" onerror="this.parentNode.style.display='none'"></div>
-<header class="head"><h1>Fundraising 2026 <span class="sep">|</span> Donor Hit List</h1><p>Viewing ONLY <span class="sep">|</span> Click the blue column name to sort up/down <span class="sep">|</span> email <a href="mailto:donations@manlycampusfundraising.org">donations@manlycampusfundraising.org</a> with updates</p></header>
+<div class="banner"><img id="banner" src="assets/summary-banner.png?v=1" alt="" onerror="this.parentNode.style.display='none'"></div>
+<header class="head"><h1>Fundraising 2026 <span class="sep">|</span> Published Summary</h1><p>Viewing ONLY <span class="sep">|</span> Click the blue column name to sort up/down <span class="sep">|</span> email <a href="mailto:donations@manlycampusfundraising.org">donations@manlycampusfundraising.org</a> with updates</p></header>
 <div class="wrap">
   <div class="bar">
     <div class="chips" id="chips"></div>
@@ -80,20 +64,10 @@ body.locked{overflow:hidden}
 </div>
 <script>
 const CONFIG={
-  csvUrl:"https://docs.google.com/spreadsheets/d/e/2PACX-1vQcMBBKHXpO2KN_CllGbL5M2NcgXN9DHx7385FZ8XDETYUOQ6GAllv_DHIkfNVH3xC2MiJkMJbTHPnY/pub?gid=2105308099&single=true&output=csv",
-  headerHas:["supporter"],
-  statusKey:"status",
-  statusOrder:["research","contact me","awaiting reply","donating","received","no"],
-  columns:[
-    {key:"zone",label:"Zone"},
-    {key:"status",label:"Status",badge:true},
-    {key:"supporter",label:"Supporter",cls:"name"},
-    {key:"the ask | notes on items",label:"The Ask / Notes",cls:"ask"},
-    {key:"p&c contact",label:"Owner"},
-    {key:"phone",label:"Phone",cls:"phone"},
-    {key:"suburb",label:"Suburb"},
-    {key:"address",label:"Address",cls:"addr"}
-  ]
+  csvUrl:"https://docs.google.com/spreadsheets/d/e/2PACX-1vQcMBBKHXpO2KN_CllGbL5M2NcgXN9DHx7385FZ8XDETYUOQ6GAllv_DHIkfNVH3xC2MiJkMJbTHPnY/pub?gid=1672734792&single=true&output=csv",
+  // the formula in A3 already lays the 7 pulled columns out as SummaryPUB A–G, so just show them in order
+  cols:[0,1,2,3,4,5,6],
+  defaultSort:1   // SummaryPUB col B = "SORT HERE!"
 };
 function parseCSV(text){
   const rows=[];let row=[],cur="",q=false;
@@ -102,47 +76,33 @@ function parseCSV(text){
     else{if(c=='"')q=true;else if(c==','){row.push(cur);cur="";}
       else if(c=='\n'){row.push(cur);rows.push(row);row=[];cur="";}else if(c=='\r'){}else cur+=c;}}
   if(cur.length||row.length){row.push(cur);rows.push(row);}
-  if(!rows.length)return[];
-  const norm=s=>s.trim().toLowerCase().replace(/\s+/g,' ');
-  let hi=rows.findIndex(r=>{const s=r.map(norm);return CONFIG.headerHas.every(h=>s.includes(h));});
-  if(hi<0)hi=0;
-  const head=rows[hi].map(norm);
-  return rows.slice(hi+1).filter(r=>r.some(x=>x.trim()!="")).map(r=>{const o={};head.forEach((h,i)=>o[h]=(r[i]||"").trim());return o;});
+  return rows;
 }
-function statusClass(v){return "s-"+String(v||"").toLowerCase().replace(/[^a-z]/g,"");}
-function statusRank(v){const i=CONFIG.statusOrder.indexOf(String(v||"").toLowerCase());return i<0?CONFIG.statusOrder.length:i;}
-let DATA=[],sortKey="supporter",sortDir=1;
+function clean(s){return String(s==null?"":s).replace(/\s+/g," ").trim();}
+function esc(s){return String(s==null?"":s).replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));}
+let HEAD=[],DATA=[],sortIdx=CONFIG.defaultSort,sortDir=1;
 function render(){
-  const rows=DATA.slice().sort((a,b)=>{
-    let d;
-    if(sortKey===CONFIG.statusKey){d=statusRank(a[sortKey])-statusRank(b[sortKey]);if(!d)d=(a.supporter||"").localeCompare(b.supporter||"");}
-    else d=String(a[sortKey]||"").localeCompare(String(b[sortKey]||""),undefined,{sensitivity:"base"});
-    return d*sortDir;
-  });
-  document.getElementById("thead").innerHTML="<tr>"+CONFIG.columns.map(c=>`<th class="${c.cls||''}" data-sort="${c.key}">${c.label} <span class="arr">${sortKey===c.key?(sortDir>0?"▾":"▴"):""}</span></th>`).join("")+"</tr>";
-  document.getElementById("tbody").innerHTML=rows.map(r=>"<tr>"+CONFIG.columns.map(c=>{
-    let v=r[c.key]||"";
-    if(c.badge)return `<td><span class="badge ${statusClass(v)}">${esc(v)||"—"}</span></td>`;
-    return `<td class="${c.cls||""}">${esc(v)}</td>`;
-  }).join("")+"</tr>").join("");
-  // status chips
-  const counts={};DATA.forEach(r=>{const s=(r[CONFIG.statusKey]||"—").trim()||"—";counts[s]=(counts[s]||0)+1;});
-  document.getElementById("chips").innerHTML=`<span class="chip"><b>${DATA.length}</b> total</span>`+
-    Object.entries(counts).sort((a,b)=>statusRank(a[0])-statusRank(b[0])).map(([s,n])=>`<span class="chip">${esc(s)} <b>${n}</b></span>`).join("");
-  document.querySelectorAll("[data-sort]").forEach(b=>b.classList.toggle("on",b.getAttribute("data-sort")===sortKey));
+  const C=CONFIG.cols;
+  const rows=DATA.slice().sort((a,b)=>String(a[sortIdx]||"").localeCompare(String(b[sortIdx]||""),undefined,{numeric:true,sensitivity:"base"})*sortDir);
+  document.getElementById("thead").innerHTML="<tr>"+C.map(i=>`<th data-idx="${i}">${esc(clean(HEAD[i])||"")} <span class="arr">${sortIdx===i?(sortDir>0?"▾":"▴"):""}</span></th>`).join("")+"</tr>";
+  document.getElementById("tbody").innerHTML=rows.map(r=>"<tr>"+C.map(i=>`<td>${esc(r[i]||"")}</td>`).join("")+"</tr>").join("");
+  document.getElementById("chips").innerHTML=`<span class="chip"><b>${DATA.length}</b> rows</span>`;
   document.getElementById("foot").textContent=rows.length+" rows · updates when the sheet is edited";
 }
-function esc(s){return String(s).replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));}
-document.addEventListener("click",e=>{const b=e.target.closest("[data-sort]");if(b){const k=b.getAttribute("data-sort");if(k===sortKey)sortDir*=-1;else{sortKey=k;sortDir=1;}render();}});
 function fitBar(){const tw=document.querySelector(".tablewrap");if(tw)tw.style.maxHeight=Math.max(220,window.innerHeight-tw.getBoundingClientRect().top-16)+"px";}
 window.addEventListener("resize",fitBar);
+document.addEventListener("click",e=>{const t=e.target.closest("[data-idx]");if(t){const i=+t.getAttribute("data-idx");if(i===sortIdx)sortDir*=-1;else{sortIdx=i;sortDir=1;}render();}});
 document.getElementById("refresh").addEventListener("click",()=>{document.getElementById("foot").textContent="Refreshing…";boot().then(fitBar);});
 async function boot(){
   try{
     const res=await fetch(CONFIG.csvUrl,{cache:"no-store"});
     if(!res.ok)throw new Error("HTTP "+res.status);
-    DATA=parseCSV(await res.text()).filter(r=>(r.supporter||"").trim() && String(r.status||"").trim().toLowerCase()!=="no" && String(r.zone||"").trim().toLowerCase()!=="no");
-    if(!DATA.length){document.getElementById("foot").textContent="No rows found.";return;}
+    const all=parseCSV(await res.text());
+    // header = first row mentioning SUPPORTER (skips the "SUMMARY - DO NOT TOUCH" title row)
+    let hi=all.findIndex(r=>r.some(x=>/supporter/i.test(x))); if(hi<0)hi=Math.min(1,all.length-1);
+    HEAD=all[hi]||[];
+    DATA=all.slice(hi+1).filter(r=>CONFIG.cols.some(i=>(r[i]||"").trim()));
+    if(!DATA.length){document.getElementById("thead").innerHTML="";document.getElementById("tbody").innerHTML="";document.getElementById("foot").textContent="No rows yet — this tab is empty. Populate SummaryPUB-NO!! and hit Refresh.";document.getElementById("chips").innerHTML="";return;}
     render();
   }catch(err){document.getElementById("foot").innerHTML='<span class="err">Could not load the sheet: '+esc(err.message)+'</span>';}
 }
