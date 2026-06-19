@@ -141,7 +141,8 @@ function render(){
   order.forEach(g=>{
     const rows=groups[g].slice().sort(cmp);
     const glabel=g.replace(/^\d{1,2}[\s.)\-]+/,"");   // strip the 01/02 sort prefix from the heading
-    html+=`<tr class="grouphead"><td colspan="${cols.length}">${esc(glabel)} <span class="cnt">· ${rows.length}</span></td></tr>`;
+    const disp={"comms":"Communications"}[glabel.trim().toLowerCase()]||glabel;   // phase display aliases
+    html+=`<tr class="grouphead"><td colspan="${cols.length}">${esc(disp)} <span class="cnt">· ${rows.length}</span></td></tr>`;
     html+=rows.map(r=>"<tr>"+cols.map(c=>{
       let v=r[c.key]||"";
       if(c.badge)return `<td><span class="badge ${statusClass(v)}">${esc(v)||"—"}</span></td>`;
