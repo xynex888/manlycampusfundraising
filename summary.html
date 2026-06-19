@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Manly Fundraising — Published Summary</title>
+<title>Manly Fundraising — Donation Summary</title>
 <meta name="robots" content="noindex,nofollow">
 <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2032%2032'%3E%3Crect%20width='32'%20height='32'%20rx='7'%20fill='%230045AB'/%3E%3Ctext%20x='16'%20y='23'%20font-size='22'%20text-anchor='middle'%3E%E2%9D%84%EF%B8%8F%3C/text%3E%3C/svg%3E">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -55,7 +55,7 @@ body.locked{overflow:hidden}
   <div id="gerr" class="gerr"></div>
 </form></div>
 <div class="banner"><img id="banner" src="assets/summary-banner.png?v=1" alt="" onerror="this.parentNode.style.display='none'"></div>
-<header class="head"><h1>Fundraising 2026 <span class="sep">|</span> Published Summary</h1><p>Viewing ONLY <span class="sep">|</span> Click the blue column name to sort up/down <span class="sep">|</span> email <a href="mailto:donations@manlycampusfundraising.org">donations@manlycampusfundraising.org</a> with updates</p></header>
+<header class="head"><h1>Fundraising 2026 <span class="sep">|</span> Donation Summary</h1><p>Viewing ONLY <span class="sep">|</span> Click the blue column name to sort up/down <span class="sep">|</span> email <a href="mailto:donations@manlycampusfundraising.org">donations@manlycampusfundraising.org</a> with updates</p></header>
 <div class="wrap">
   <div class="bar">
     <div class="chips" id="chips"></div>
@@ -70,7 +70,7 @@ const CONFIG={
   // the formula in A3 lays the pulled columns out as SummaryPUB A–H; show them in order
   cols:[0,1,2,3,4,5,6,7],
   // column names are set HERE (not read from the sheet) so header typos don't matter; order must match the formula
-  labels:["Zone","Sort Here!","Contact","GALA","Supporter","Item for Donation","Value $","Held-by"],
+  labels:["Zone","Sort Here!","Contact","GALA","Supporter","Item for Donation","Value $","Follow-Up Notes"],
   defaultSort:1   // col B = "Sort Here!"
 };
 function parseCSV(text){
