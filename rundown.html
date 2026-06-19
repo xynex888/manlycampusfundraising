@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Manly Fundraising — Run Sheet</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2032%2032'%3E%3Crect%20width='32'%20height='32'%20rx='7'%20fill='%230045AB'/%3E%3Ctext%20x='16'%20y='23'%20font-size='22'%20text-anchor='middle'%3E%E2%9D%84%EF%B8%8F%3C/text%3E%3C/svg%3E">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--royal:#0045AB;--orange:#F26C21;--ink:#1d2330;--muted:#7a828f;--line:#eceef2;--bg:#f6f7f9;--card:#fff;--shadow:0 1px 3px rgba(16,24,40,.06),0 1px 2px rgba(16,24,40,.04)}
+*{box-sizing:border-box}
+body{margin:0;font-family:'Inter',-apple-system,system-ui,sans-serif;color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased}
+header.head{background:#fff;color:var(--ink);padding:22px 20px 18px;text-align:center;border-bottom:1px solid var(--line)}
+header.head h1{margin:0;font-size:clamp(20px,3.2vw,28px);font-weight:800;letter-spacing:.2px;color:var(--royal)}
+header.head h1 .sep{opacity:.4;font-weight:400}
+header.head p{margin:6px 0 0;color:var(--muted);font-size:13px}
+.wrap{max-width:1320px;margin:0 auto;padding:16px}
+.nav{margin-bottom:10px;font-size:13px;color:var(--muted)}
+.nav a{color:var(--royal);font-weight:700;text-decoration:none}
+.nav b{color:var(--ink)}
+.bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-bottom:12px;position:sticky;top:0;z-index:6;background:var(--bg);padding:12px 0;border-bottom:1px solid var(--line)}
+.ctl{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.rbtn{font:inherit;font-weight:700;border:1px solid #e9c64a;background:#FFC400;color:#1d2330;border-radius:999px;padding:7px 16px;cursor:pointer;box-shadow:0 1px 2px rgba(16,24,40,.08)}
+.rbtn:active{transform:translateY(1px)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:6px 12px;font-size:12px;font-weight:600;color:var(--muted);box-shadow:0 1px 2px rgba(16,24,40,.04)}
+.chip b{color:var(--ink)}
+.tablewrap{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:auto;box-shadow:var(--shadow)}
+table{border-collapse:collapse;width:100%;font-size:13.5px;min-width:1040px}
+thead th{position:sticky;top:0;z-index:4;background:#fbfcfd;text-align:left;padding:11px 14px;font-weight:700;color:var(--muted);border-bottom:1px solid var(--line);white-space:nowrap;user-select:none;text-transform:uppercase;letter-spacing:.6px;font-size:11px}
+tbody td{padding:11px 14px;border-bottom:1px solid #f1f2f5;vertical-align:top;line-height:1.35}
+tbody tr:hover{background:#fafbfe}
+td.timehero{white-space:nowrap;font-weight:800;color:var(--royal);position:sticky;left:0;background:#fff;border-right:1px solid var(--line)}
+tbody tr:hover td.timehero{background:#fafbfe}
+td.ask{color:#39414f;min-width:170px}
+td.empty{color:#cdd2da}
+tr.grouphead td{background:#eef1f8;color:var(--royal);font-weight:800;font-size:15px;letter-spacing:.4px;padding:12px 16px;text-transform:uppercase;border-top:1px solid var(--line);border-bottom:1px solid var(--line);position:sticky;left:0}
+.note{color:var(--muted);font-size:12px;text-align:center;padding:16px}
+.err{color:#b13838}
+.gate{position:fixed;inset:0;background:var(--royal);display:flex;align-items:center;justify-content:center;z-index:999;padding:20px}
+.gatebox{background:#fff;border-radius:14px;padding:26px 24px;max-width:320px;width:100%;text-align:center;box-shadow:0 12px 40px rgba(0,0,0,.25)}
+.gatebox h2{margin:0 0 2px;color:var(--royal);font-size:20px}
+.gatebox p{margin:0 0 14px;color:var(--muted);font-size:13px}
+.gatebox input{width:100%;padding:11px 12px;margin:6px 0;border:1px solid var(--line);border-radius:9px;font:inherit}
+.gatebox button{width:100%;padding:11px;margin-top:10px;border:0;border-radius:9px;background:var(--orange);color:#fff;font:inherit;font-weight:700;cursor:pointer}
+.gerr{color:#b13838;font-size:12.5px;min-height:16px;margin-top:8px}
+body.locked{overflow:hidden}
+</style>
+</head>
+<body class="locked">
+<div id="gate" class="gate"><form class="gatebox" onsubmit="return false">
+  <h2>Manly Fundraising</h2><p>Team access</p>
+  <input id="gu" placeholder="Username" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false">
+  <input id="gp" type="password" placeholder="Password" autocomplete="current-password" autocapitalize="none" autocorrect="off" spellcheck="false">
+  <button id="glogin" type="button">Enter</button>
+  <div id="gerr" class="gerr"></div>
+</form></div>
+<header class="head"><h1>Fundraising 2026 <span class="sep">|</span> Run Sheet</h1><p>Friday setup → Saturday event · read only · edit in the sheet</p></header>
+<div class="wrap">
+  <div class="nav"><a href="/plan">◂ Worklist</a> · <b>Run sheet (by time)</b></div>
+  <div class="bar">
+    <div class="chips" id="chips"></div>
+    <div class="ctl"><button id="refresh" class="rbtn" title="Reload latest">⟳ Refresh</button></div>
+  </div>
+  <div class="tablewrap"><table><thead id="thead"></thead><tbody id="tbody"></tbody></table></div>
+  <div class="note" id="foot">Loading…</div>
+</div>
+<script>
+const CONFIG={
+  csvUrl:"/rundown.csv",
+  headerHas:["day","time"],
+  groupKey:"day",
+  columns:[
+    {key:"time",label:"Time",cls:"timehero"},
+    {key:"trivia / stage",label:"Trivia / Stage"},
+    {key:"bar",label:"Bar"},
+    {key:"setup / logistics",label:"Setup"},
+    {key:"food",label:"Food"},
+    {key:"av & sound",label:"AV / Sound"},
+    {key:"prizes / games",label:"Prizes / Games"},
+    {key:"notes",label:"Notes",cls:"ask"}
+  ]
+};
+function parseCSV(text){
+  const rows=[];let row=[],cur="",q=false;
+  for(let i=0;i<text.length;i++){const c=text[i];
+    if(q){if(c=='"'&&text[i+1]=='"'){cur+='"';i++;}else if(c=='"'){q=false;}else cur+=c;}
+    else{if(c=='"')q=true;else if(c==','){row.push(cur);cur="";}
+      else if(c=='\n'){row.push(cur);rows.push(row);row=[];cur="";}else if(c=='\r'){}else cur+=c;}}
+  if(cur.length||row.length){row.push(cur);rows.push(row);}
+  if(!rows.length)return[];
+  const norm=s=>s.trim().toLowerCase().replace(/\s+/g,' ');
+  let hi=rows.findIndex(r=>{const s=r.map(norm);return CONFIG.headerHas.every(h=>s.includes(h));});
+  if(hi<0)hi=0;
+  const head=rows[hi].map(norm);
+  return rows.slice(hi+1).filter(r=>r.some(x=>x.trim()!="")).map(r=>{const o={};head.forEach((h,i)=>o[h]=(r[i]||"").trim());return o;});
+}
+function esc(s){return String(s==null?"":s).replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));}
+let DATA=[];
+function render(){
+  const cols=CONFIG.columns.filter(c=>c.key!==CONFIG.groupKey);
+  const order=[],groups={};
+  DATA.forEach(r=>{const g=(r[CONFIG.groupKey]||"—").trim()||"—";if(!(g in groups)){groups[g]=[];order.push(g);}groups[g].push(r);});  // preserve sheet order
+  document.getElementById("thead").innerHTML="<tr>"+cols.map(c=>`<th>${esc(c.label)}</th>`).join("")+"</tr>";
+  let html="";
+  order.forEach(g=>{
+    html+=`<tr class="grouphead"><td colspan="${cols.length}">${esc(g)}</td></tr>`;
+    html+=groups[g].map(r=>"<tr>"+cols.map(c=>{
+      const v=(r[c.key]||"").trim();
+      if(!v)return `<td class="empty">–</td>`;
+      return `<td class="${c.cls||""}">${esc(v)}</td>`;
+    }).join("")+"</tr>").join("");
+  });
+  document.getElementById("tbody").innerHTML=html;
+  document.getElementById("chips").innerHTML=order.map(g=>`<span class="chip">${esc(g)} <b>${groups[g].length}</b></span>`).join("");
+  document.getElementById("foot").textContent=DATA.length+" entries · "+order.length+" days · read only";
+}
+function fitBar(){const tw=document.querySelector(".tablewrap");if(tw)tw.style.maxHeight=Math.max(220,window.innerHeight-tw.getBoundingClientRect().top-16)+"px";}
+window.addEventListener("resize",fitBar);
+document.getElementById("refresh").addEventListener("click",()=>{document.getElementById("foot").textContent="Refreshing…";boot().then(fitBar);});
+async function boot(){
+  try{
+    const res=await fetch(CONFIG.csvUrl,{cache:"no-store"});
+    if(!res.ok)throw new Error("HTTP "+res.status);
+    DATA=parseCSV(await res.text()).filter(r=>(r.time||"").trim());
+    if(!DATA.length){document.getElementById("foot").textContent="No run-sheet rows found.";return;}
+    render();
+  }catch(err){document.getElementById("foot").innerHTML='<span class="err">Could not load the run sheet: '+esc(err.message)+'</span>';}
+}
+const CREDS={user:"raise",pass:"moneynow"};
+function showApp(){document.getElementById("gate").style.display="none";document.body.classList.remove("locked");fitBar();boot().then(fitBar);}
+function tryLogin(){const u=(document.getElementById("gu").value||"").trim(),p=document.getElementById("gp").value||"";if(u===CREDS.user&&p===CREDS.pass){sessionStorage.setItem("mcf_auth","1");showApp();}else{document.getElementById("gerr").textContent="Wrong username or password.";}}
+if(sessionStorage.getItem("mcf_auth")==="1"){showApp();}
+else{document.getElementById("glogin").addEventListener("click",tryLogin);document.getElementById("gp").addEventListener("keydown",e=>{if(e.key==="Enter")tryLogin();});document.getElementById("gu").focus();}
+</script>
+</body>
+</html>
