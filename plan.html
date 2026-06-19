@@ -21,6 +21,8 @@ header.head p{margin:6px 0 0;color:var(--muted);font-size:13px}
 .ctl{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 .rbtn{font:inherit;font-weight:700;border:1px solid #e9c64a;background:#FFC400;color:#1d2330;border-radius:999px;padding:7px 16px;cursor:pointer;box-shadow:0 1px 2px rgba(16,24,40,.08)}
 .rbtn:active{transform:translateY(1px)}
+.tbtn{font:inherit;font-weight:600;border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:999px;padding:7px 14px;cursor:pointer}
+.tbtn.on{background:var(--royal);color:#fff;border-color:var(--royal)}
 .chips{display:flex;flex-wrap:wrap;gap:6px}
 .chip{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:6px 12px;font-size:12px;font-weight:600;color:var(--muted);box-shadow:0 1px 2px rgba(16,24,40,.04)}
 .chip b{color:var(--ink)}
@@ -74,7 +76,7 @@ body.locked{overflow:hidden}
   <div class="nav"><b>Grouped by phase</b> · <a href="/schedule">By date — to-do list ▸</a></div>
   <div class="bar">
     <div class="chips" id="chips"></div>
-    <div class="ctl"><button id="refresh" class="rbtn" title="Reload latest from the sheet">⟳ Refresh</button></div>
+    <div class="ctl"><button id="hideDone" class="tbtn">Hide Done</button><button id="refresh" class="rbtn" title="Reload latest from the sheet">⟳ Refresh</button></div>
   </div>
   <div class="tablewrap"><table><thead id="thead"></thead><tbody id="tbody"></tbody></table></div>
   <div class="note" id="foot">Loading…</div>
@@ -117,7 +119,7 @@ function statusClass(v){return "s-"+String(v||"").toLowerCase().replace(/[^a-z]/
 function statusRank(v){const i=CONFIG.statusOrder.indexOf(String(v||"").toLowerCase());return i<0?CONFIG.statusOrder.length:i;}
 const MONTHS={jan:0,feb:1,mar:2,apr:3,may:4,jun:5,jul:6,aug:7,sep:8,oct:9,nov:10,dec:11};
 function dateVal(s){s=String(s||"").trim();if(!s)return 999999;const m=s.match(/(\d{1,2})\s*([A-Za-z]{3})/);if(!m)return 999998;const mon=MONTHS[m[2].toLowerCase()];if(mon===undefined)return 999998;return mon*100+parseInt(m[1],10);}
-let DATA=[],sortKey="date due",sortDir=1;
+let DATA=[],sortKey="date due",sortDir=1,hideDone=false;
 function render(){
   const cols=CONFIG.columns.filter(c=>c.key!==CONFIG.groupKey);   // phase becomes the heading, not a column
   const cmp=(a,b)=>{
@@ -129,7 +131,8 @@ function render(){
   };
   // group by phase, ordered by the phase value (numeric-aware: 01, 02 …); rows sort within each group
   const order=[],groups={};
-  DATA.forEach(r=>{const g=(r[CONFIG.groupKey]||"—").trim()||"—";if(!(g in groups)){groups[g]=[];order.push(g);}groups[g].push(r);});
+  const src=hideDone?DATA.filter(r=>String(r[CONFIG.statusKey]||"").trim().toLowerCase()!=="done"):DATA;
+  src.forEach(r=>{const g=(r[CONFIG.groupKey]||"—").trim()||"—";if(!(g in groups)){groups[g]=[];order.push(g);}groups[g].push(r);});
   order.sort((a,b)=>a.localeCompare(b,undefined,{numeric:true,sensitivity:"base"}));
   document.getElementById("thead").innerHTML="<tr>"+cols.map(c=>`<th data-sort="${c.key}">${c.label} <span class="arr">${sortKey===c.key?(sortDir>0?"▾":"▴"):""}</span></th>`).join("")+"</tr>";
   let html="";
@@ -148,13 +151,14 @@ function render(){
   document.getElementById("chips").innerHTML=`<span class="chip"><b>${DATA.length}</b> jobs</span>`+
     Object.entries(counts).sort((a,b)=>statusRank(a[0])-statusRank(b[0])).map(([s,n])=>`<span class="chip">${esc(s)} <b>${n}</b></span>`).join("");
   document.querySelectorAll("[data-sort]").forEach(b=>b.classList.toggle("on",b.getAttribute("data-sort")===sortKey));
-  document.getElementById("foot").textContent=DATA.length+" jobs in "+order.length+" groups · updates when the sheet is edited";
+  document.getElementById("foot").textContent=src.length+" jobs in "+order.length+" groups"+(hideDone?" · Done hidden":"")+" · updates when the sheet is edited";
 }
 function esc(s){return String(s).replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));}
 document.addEventListener("click",e=>{const b=e.target.closest("[data-sort]");if(b){const k=b.getAttribute("data-sort");if(k===sortKey)sortDir*=-1;else{sortKey=k;sortDir=1;}render();}});
 function fitBar(){const tw=document.querySelector(".tablewrap");if(tw)tw.style.maxHeight=Math.max(220,window.innerHeight-tw.getBoundingClientRect().top-16)+"px";}
 window.addEventListener("resize",fitBar);
 document.getElementById("refresh").addEventListener("click",()=>{document.getElementById("foot").textContent="Refreshing…";boot().then(fitBar);});
+document.getElementById("hideDone").addEventListener("click",e=>{hideDone=!hideDone;e.currentTarget.classList.toggle("on",hideDone);render();fitBar();});
 async function boot(){
   try{
     const res=await fetch(CONFIG.csvUrl,{cache:"no-store"});
