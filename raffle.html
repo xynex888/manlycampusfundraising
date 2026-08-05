@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Raffle Tickets — BUY NOW</title>
+<meta name="description" content="Manly Campus Fundraising 2026 — raffle tickets are on sale now. 1 for $5, 5 for $20, 20 for $50. Major prize plus prizes from Carol Gibbons Photography, Archie Rose, Sydney Pelvic Clinic and Tommy Gun's. All funds go towards air-conditioning in classrooms.">
+<!-- This page IS the promo graphic, so we DO expose og:image here (site default is text-only) -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://manlycampusfundraising.org/raffle">
+<meta property="og:site_name" content="manlycampusfundraising.org">
+<meta property="og:title" content="Raffle Tickets — BUY NOW">
+<meta property="og:description" content="1 for $5 · 5 for $20 · 20 for $50. If you only donate ONCE this year, make it some raffle tickets!">
+<!-- Link-preview thumbnail: a short landscape crop so Messages shows a compact card, NOT the full-height graphic -->
+<meta property="og:image" content="https://manlycampusfundraising.org/raffle-preview.png?v=1">
+<meta property="og:image:width" content="1500">
+<meta property="og:image:height" content="515">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Raffle Tickets — BUY NOW">
+<meta name="twitter:image" content="https://manlycampusfundraising.org/raffle-preview.png?v=1">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2032%2032'%3E%3Crect%20width='32'%20height='32'%20rx='7'%20fill='%230045AB'/%3E%3Ctext%20x='16'%20y='23'%20font-size='22'%20text-anchor='middle'%3E%E2%9D%84%EF%B8%8F%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{ --green:#dce9ea; --ink:#173a32; --font:"DM Sans",system-ui,sans-serif; }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--green);
+    color:var(--ink);
+    font-family:var(--font);
+    min-height:100vh;
+    min-height:100dvh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+  }
+  main{
+    width:100%;
+    max-width:520px;              /* phone-format graphic — cap on desktop, full-bleed on phone */
+    padding:0;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+  }
+  img.notice{
+    display:block;
+    width:100%;
+    height:auto;
+    max-width:100%;
+  }
+  footer{
+    width:100%;
+    max-width:520px;
+    text-align:center;
+    padding:18px 16px 28px;
+    font-size:15px;
+  }
+  footer a{ color:#1f805b; font-weight:700; text-decoration:none; }
+  footer a:focus-visible{ outline:2px solid #1f805b; outline-offset:3px; border-radius:4px; }
+  .tix{
+    display:block;
+    width:calc(100% - 32px);
+    max-width:460px;
+    margin:20px auto 4px;
+    padding:26px 24px;
+    background:#0045AB;
+    color:#fff;
+    font-weight:800;
+    /* min is 22 not 24 (as on /open): this label is longer, and at 24px it came
+       within 4px of overflowing a 320px-wide phone. Identical above ~343px. */
+    font-size:clamp(22px,7vw,34px);
+    line-height:1.1;
+    border-radius:999px;
+    text-decoration:none;
+    box-shadow:0 12px 28px rgba(0,69,171,.32);
+  }
+  .tix:active{ transform:translateY(1px); }
+  header.topcta{ width:100%; max-width:520px; text-align:center; padding:0 16px; }
+  .tix-top{
+    margin:12px auto 10px;
+    padding:11px 20px;
+    font-size:clamp(15px,3.8vw,20px);
+    max-width:320px;
+    box-shadow:0 6px 16px rgba(0,69,171,.26);
+  }
+  @media (min-width:521px){
+    body{ padding-top:24px; }
+    img.notice{ border-radius:14px; box-shadow:0 18px 50px rgba(23,58,50,.18); }
+  }
+</style>
+</head>
+<body>
+  <header class="topcta">
+    <a class="tix tix-top" href="https://app.galabid.com/manlytrivia/">BUY RAFFLE &amp; BID &rarr;</a>
+  </header>
+  <main>
+    <img class="notice" src="raffle.webp?v=1"
+         alt="Manly Campus Fundraising 2026 — raffle tickets BUY NOW. 1 for $5, 5 for $20, 20 for $50. Major prize plus raffle prizes from Carol Gibbons Photography, Archie Rose Distilling Co., Sydney Pelvic Clinic and Tommy Gun's. If you only donate ONCE this year, make it some raffle tickets. Silent Auction also OPEN — bid on The Scotch Malt Whisky Society, Harbord Diggers, Whale Tales, Mathnasium, Sydney FC and more. ManlyCampusFundraising.org — all funds raised go towards air-conditioning in classrooms.">
+  </main>
+  <footer>
+    <a class="tix" href="https://app.galabid.com/manlytrivia/">BUY RAFFLE &amp; BID &rarr;</a>
+    <div style="margin-top:16px"><a href="https://manlycampusfundraising.org/">manlycampusfundraising.org</a></div>
+  </footer>
+</body>
+</html>
